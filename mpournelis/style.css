@@ -1,11 +1,11 @@
 :root {
---bg: #625543;
---fg: #111111;
---hint-bg: rgba(0,0,0,0.5);
---hint-fg: #ffffff;
---accent: #111111;
---transition: 300ms cubic-bezier(.22,.61,.36,1);
---bg-gradient: linear-gradient(135deg, #efefef 0%, #ffb46a 100%); /* grey→orange */
+  --bg: #625543;
+  --fg: #111111;
+  --hint-bg: rgba(0,0,0,0.5);
+  --hint-fg: #ffffff;
+  --accent: #111111;
+  --transition: 300ms cubic-bezier(.22,.61,.36,1);
+  --bg-gradient: linear-gradient(135deg, #efefef 0%, #ffb46a 100%);
 }
 * { box-sizing: border-box; }
 
@@ -18,14 +18,14 @@ html, body {
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
 }
 
-/* Mobile-first: fullscreen slider */
+/* Fullscreen slider */
 .slider {
-position: relative;
-width: 100vw;
-height: 100dvh;
-overflow: hidden;
-touch-action: pinch-zoom;;
-background: var(--bg-gradient); /* από απλό λευκό σε gradient */
+  position: relative;
+  width: 100vw;
+  height: 100dvh;
+  overflow: hidden;
+  touch-action: pan-y pinch-zoom; /* επιτρέπει pinch + κάθετο scroll */
+  background: var(--bg-gradient);
 }
 
 /* Horizontal track */
@@ -38,7 +38,7 @@ background: var(--bg-gradient); /* από απλό λευκό σε gradient */
   transition: transform var(--transition);
 }
 
-/* Each slide occupies full viewport */
+/* Each slide */
 .slide {
   flex: 0 0 100vw;
   height: 100%;
@@ -47,7 +47,7 @@ background: var(--bg-gradient); /* από απλό λευκό σε gradient */
   background: var(--bg);
 }
 
-/* Images: contain χωρίς crop, με διακριτική σκιά σε desktop */
+/* Εικόνες: contain + σκιά και σε mobile */
 .slide img {
   max-width: 100vw;
   max-height: 100dvh;
@@ -55,9 +55,13 @@ background: var(--bg-gradient); /* από απλό λευκό σε gradient */
   height: 100dvh;
   object-fit: contain;
   display: block;
+  border-radius: 12px;                    /* ελαφρύ rounded */
+  box-shadow: 0 10px 30px rgba(0,0,0,0.18), 
+              0 2px 8px rgba(0,0,0,0.12); /* διακριτική σκιά σε mobile */
+  touch-action: pinch-zoom;
 }
 
-/* Hint arrow bubble */
+/* Hint bubble */
 #hint {
   position: fixed;
   left: 12px;
@@ -77,32 +81,12 @@ background: var(--bg-gradient); /* από απλό λευκό σε gradient */
   animation: float 2s ease-in-out infinite;
   backdrop-filter: blur(4px);
 }
+#hint .arrow { transform: rotate(180deg); font-size: 16px; opacity: 0.9; }
+#hint .text { opacity: 0.9; }
+#hint.hide { opacity: 0; visibility: hidden; transition: opacity 220ms ease, visibility 220ms ease 220ms; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
 
-#hint .arrow {
-  display: inline-block;
-  transform: rotate(180deg); /* ‹ στρέφεται ώστε να υπονοεί “σύρε δεξιά” */
-  font-size: 16px;
-  opacity: 0.9;
-}
-
-#hint .text {
-  opacity: 0.9;
-}
-
-/* Fade out όταν δε χρειάζεται */
-#hint.hide {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 220ms ease, visibility 220ms ease 220ms;
-}
-
-/* Subtle floating */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-3px); }
-}
-
-/* Desktop βελτίωση: κρατάμε clean εμφάνιση */
+/* Desktop: κρατάμε καθαρό look και βελτιώνουμε σκιά */
 @media (min-width: 769px) {
   .slide img {
     max-width: min(90vw, 900px);
@@ -110,7 +94,8 @@ background: var(--bg-gradient); /* από απλό λευκό σε gradient */
     width: auto;
     height: auto;
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    box-shadow: 0 16px 48px rgba(0,0,0,0.16), 
+                0 4px 16px rgba(0,0,0,0.12);
     touch-action: pinch-zoom;
   }
 }
