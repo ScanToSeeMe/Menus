@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Παραγγελία & Πληρωμή</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #0d47a1;
+      color: #fff;
+      padding: 2rem 1rem 1rem 1rem;
+      text-align: center;
+    }
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    .form-container {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 2rem 2.5rem;
+      max-width: 400px;
+      width: 100%;
+    }
+    h1 {
+      color: #0d47a1;
+      margin-bottom: 1.5rem;
+      font-size: 2rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.7rem;
+      margin-bottom: 1.2rem;
+      border: 1px solid #bdbdbd;
+      border-radius: 6px;
+      font-size: 1rem;
+      background: #fafafa;
+      transition: border 0.2s;
+    }
+    input:focus, select:focus {
+      border: 1.5px solid #0d47a1;
+      outline: none;
+    }
+    button, .pay-link {
+      width: 100%;
+      background: #0d47a1;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 0.9rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      transition: background 0.2s;
+    }
+    button:hover, .pay-link:hover {
+      background: #1565c0;
+    }
+    .success-message {
+      color: #388e3c;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    @media (max-width: 600px) {
+      .form-container {
+        padding: 1.2rem 0.5rem;
+      }
+      h1 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+  <script>
+    function handleSubmit(event) {
+      event.preventDefault();
+      document.getElementById('order-form').style.display = 'none';
+      document.getElementById('success').style.display = 'block';
+      // Εμφάνιση σωστού payment link ανάλογα με το πακέτο
+      var service = document.getElementById('service').value;
+      var payLink = document.getElementById('pay-link');
+      if(service === 'BASIC') {
+        payLink.href = 'https://revolut.me/georgechrp'; // Για BASIC
+        payLink.textContent = 'Πληρωμή BASIC μέσω Revolut (179€)';
+      } else {
+        payLink.href = 'https://revolut.me/georgechrp'; // Για STANDARD (ίδιο link, αν θες άλλο, άλλαξε εδώ)
+        payLink.textContent = 'Πληρωμή STANDARD μέσω Revolut (299€)';
+      }
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <h1>Παραγγελία & Πληρωμή</h1>
+    <p>Συμπλήρωσε τα στοιχεία σου και προχώρησε στην πληρωμή μέσω Revolut</p>
+  </header>
+  <main>
+    <div class="form-container">
+      <form id="order-form" action="mailto:info@flex-folio.com" method="POST" enctype="text/plain" onsubmit="handleSubmit(event)">
+        <label for="name">Ονοματεπώνυμο</label>
+        <input type="text" id="name" name="Όνομα" required>
+        <label for="email">Email</label>
+        <input type="email" id="email" name="Email" required>
+        <label for="service">Υπηρεσία</label>
+        <select id="service" name="Υπηρεσία" required>
+          <option value="BASIC">BASIC (179€)</option>
+          <option value="STANDARD">STANDARD (299€)</option>
+        </select>
+        <label for="notes">Σημειώσεις (προαιρετικό)</label>
+        <input type="text" id="notes" name="Σημειώσεις" placeholder="Π.χ. link LinkedIn, προτιμήσεις">
+        <button type="submit">Υποβολή Στοιχείων</button>
+      </form>
+      <div id="success" style="display:none;">
+        <div class="success-message">Τα στοιχεία σου καταχωρήθηκαν!<br>Προχώρησε στην πληρωμή:</div>
+        <a class="pay-link" id="pay-link" href="https://revolut.me/georgechrp" target="_blank">Πληρωμή μέσω Revolut</a>
+        <p style="margin-top:1.2rem; font-size:0.95rem; color:#666; text-align:center;">Μετά την πληρωμή, θα λάβεις email επιβεβαίωσης.</p>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2025 FlexFolio. All rights reserved.</p>
+  </footer>
+</body>
+</html>
