@@ -1,5 +1,4 @@
-// Minimal, smooth slider με touch gestures και arrow hint
-
+// Minimal, smooth slider με touch gestures, axis lock, pinch-zoom friendly και αυστηρά άκρα
 (function () {
   const slidesEl = document.getElementById('slides');
   const hintEl = document.getElementById('hint');
@@ -7,63 +6,93 @@
   const state = {
     index: 0,            // 0 ή 1
     startX: 0,
+    startY: 0,
     currentX: 0,
+    currentY: 0,
     dragging: false,
-    width: () => window.innerWidth
+    lockedAxis: null,    // 'x' | 'y' | null
+    width: () => window.innerWidth,
+    startedOnLink: false
   };
 
   const clampIndex = (i) => Math.max(0, Math.min(1, i));
   const setIndex = (i, opts = { animate: true }) => {
     state.index = clampIndex(i);
-    if (opts.animate) {
-      slidesEl.style.transition = 'transform 300ms cubic-bezier(.22,.61,.36,1)';
-    } else {
-      slidesEl.style.transition = 'none';
-    }
+    slidesEl.style.transition = opts.animate
+      ? 'transform 300ms cubic-bezier(.22,.61,.36,1)'
+      : 'none';
     const x = -state.index * state.width();
     slidesEl.style.transform = `translateX(${x}px)`;
 
-    // Hint: κρύψ’ το αν ο χρήστης άλλαξε slide ή έκανε αλληλεπίδραση
-    if (state.index > 0) {
-      hideHint();
-    }
+    // Κρύψε hint όταν ο χρήστης αλλάξει slide
+    if (state.index > 0) hideHint();
   };
 
   const hideHint = () => {
     if (!hintEl) return;
     hintEl.classList.add('hide');
-    // Προληπτικά: αφαιρούμε μετά από λίγο από το flow
-    setTimeout(() => {
-      if (hintEl && hintEl.parentNode) {
-        // Μπορείς να το αφήσεις αν προτιμάς
-        // hintEl.parentNode.removeChild(hintEl);
-      }
-    }, 600);
+    // Προαιρετικά: καθυστέρηση για smooth fade
+    setTimeout(() => {}, 600);
   };
 
-  // Τouch handlers
+  // Touch handlers με axis lock και pinch-zoom allowance
   const onTouchStart = (e) => {
-    if (e.touches.length > 1) { state.dragging = false; return; }
-    if (e.touches.length !== 1) return;
+    // Αν υπάρχουν 2+ δάχτυλα, άφησε το browser να κάνει pinch-zoom
+    if (e.touches.length !== 1) {
+      state.dragging = false;
+      state.lockedAxis = null;
+      return;
+    }
     state.dragging = true;
+    state.lockedAxis = null;
     state.startX = e.touches[0].clientX;
+    state.startY = e.touches[0].clientY;
     state.currentX = state.startX;
+    state.currentY = state.startY;
+    state.startedOnLink = e.target.closest && !!e.target.closest('a, area');
     slidesEl.style.transition = 'none';
   };
 
-  const onTouchMove = (e) => {
-    if (e.touches.length > 1) return;
-    if (!state.dragging) return;
-    state.currentX = e.touches[0].clientX;
-    const delta = state.currentX - state.startX;
+  const AXIS_LOCK_THRESHOLD = 8; // px
 
-    // Εφαρμόζουμε αντίσταση στα άκρα (rubber band)
-    let offset = -state.index * state.width() + delta;
-    const atFirst = state.index === 0 && delta > 0;
-    const atLast = state.index === 1 && delta < 0;
-    if (atFirst || atLast) {
-      offset *= 0.35;
+  const onTouchMove = (e) => {
+    if (!state.dragging) return;
+    // Αν ο χρήστης έχει 2+ δάχτυλα, μην επεμβαίνεις (pinch-zoom)
+    if (e.touches.length !== 1) return;
+    if (state.startedOnLink) return;
+
+    state.currentX = e.touches[0].clientX;
+    state.currentY = e.touches[0].clientY;
+
+    const dx = state.currentX - state.startX;
+    const dy = state.currentY - state.startY;
+
+    // Κλείδωμα άξονα: αποφάσισε αν η χειρονομία είναι οριζόντια ή κάθετη
+    if (!state.lockedAxis) {
+      if (Math.abs(dx) > AXIS_LOCK_THRESHOLD || Math.abs(dy) > AXIS_LOCK_THRESHOLD) {
+        state.lockedAxis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      } else {
+        return; // περιμένουμε να ξεκαθαρίσει η χειρονομία
+      }
     }
+
+    // Αν κλειδώθηκε στον άξονα Y, μην σέρνεις το slider (άφησε scroll/zoom)
+    if (state.lockedAxis === 'y') return;
+
+    // Εδώ είμαστε σε οριζόντια χειρονομία
+    const delta = dx;
+
+    // Αυστηρά άκρα: στο πρώτο slide μόνο αριστερά, στο δεύτερο μόνο δεξιά
+    if (state.index === 0 && delta > 0) {
+      slidesEl.style.transform = `translateX(${-state.index * state.width()}px)`;
+      return;
+    }
+    if (state.index === 1 && delta < 0) {
+      slidesEl.style.transform = `translateX(${-state.index * state.width()}px)`;
+      return;
+    }
+
+    const offset = -state.index * state.width() + delta;
     slidesEl.style.transform = `translateX(${offset}px)`;
   };
 
@@ -72,58 +101,87 @@
     state.dragging = false;
 
     const delta = state.currentX - state.startX;
-    const threshold = Math.min(120, state.width() * 0.25); // ευαίσθητο αλλά όχι υπερβολικό
+    // Πιο αυστηρό threshold για να μην αλλάζει εύκολα κατά λάθος
+    const threshold = Math.max(140, state.width() * 0.30);
 
-    if (Math.abs(delta) > threshold) {
-      if (delta < 0) {
-        setIndex(state.index + 1); // swipe left => επόμενο
-      } else {
-        setIndex(state.index - 1); // swipe right => προηγούμενο
-      }
+    if (state.lockedAxis === 'x' && Math.abs(delta) > threshold) {
+      if (delta < 0) setIndex(state.index + 1);
+      else setIndex(state.index - 1);
     } else {
-      // επιστροφή στη θέση του
       setIndex(state.index, { animate: true });
     }
 
+    state.lockedAxis = null;
     hideHint();
   };
 
-  // Mouse drag (προαιρετικό, για desktop)
+  // Mouse (desktop) — ίδια αυστηρή λογική
   let mouseDown = false;
+
   const onMouseDown = (e) => {
     mouseDown = true;
     state.dragging = true;
+    state.lockedAxis = 'x'; // στο mouse θεωρούμε άμεσα οριζόντιο drag
     state.startX = e.clientX;
+    state.startY = e.clientY;
     state.currentX = e.clientX;
+    state.currentY = e.clientY;
+    state.startedOnLink = e.target.closest && !!e.target.closest('a, area');
     slidesEl.style.transition = 'none';
   };
+
   const onMouseMove = (e) => {
     if (!mouseDown || !state.dragging) return;
+    if (state.startedOnLink) return;
+
     state.currentX = e.clientX;
-    const delta = state.currentX - state.startX;
+    state.currentY = e.clientY;
 
-    let offset = -state.index * state.width() + delta;
-    const atFirst = state.index === 0 && delta > 0;
-    const atLast = state.index === 1 && delta < 0;
-    if (atFirst || atLast) offset *= 0.35;
+    const dx = state.currentX - state.startX;
+    const delta = dx;
 
+    // Αυστηρά άκρα
+    if (state.index === 0 && delta > 0) {
+      slidesEl.style.transform = `translateX(${-state.index * state.width()}px)`;
+      return;
+    }
+    if (state.index === 1 && delta < 0) {
+      slidesEl.style.transform = `translateX(${-state.index * state.width()}px)`;
+      return;
+    }
+
+    const offset = -state.index * state.width() + delta;
     slidesEl.style.transform = `translateX(${offset}px)`;
   };
+
   const onMouseUp = () => {
     if (!mouseDown) return;
     mouseDown = false;
-    onTouchEnd();
+
+    const delta = state.currentX - state.startX;
+    const threshold = Math.max(140, state.width() * 0.30);
+
+    if (Math.abs(delta) > threshold) {
+      if (delta < 0) setIndex(state.index + 1);
+      else setIndex(state.index - 1);
+    } else {
+      setIndex(state.index, { animate: true });
+    }
+
+    state.lockedAxis = null;
+    hideHint();
   };
+
   const onMouseLeave = () => {
     if (mouseDown) onMouseUp();
   };
 
-  // Resize: επανατοποθέτηση για νέα width
+  // Resize/Orientation: επανατοποθέτηση
   const onResize = () => {
     setIndex(state.index, { animate: false });
   };
 
-  // Πρώτη τοποθέτηση
+  // Init
   setIndex(0, { animate: false });
 
   // Listeners
@@ -140,6 +198,6 @@
   window.addEventListener('resize', onResize);
   window.addEventListener('orientationchange', onResize);
 
-  // Κρύψε hint μετά από Χ δευτερόλεπτα αν δεν αλληλεπιδρά ο χρήστης
+  // Hint auto-hide
   setTimeout(hideHint, 4500);
 })();

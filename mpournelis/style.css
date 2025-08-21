@@ -24,7 +24,7 @@ position: relative;
 width: 100vw;
 height: 100dvh;
 overflow: hidden;
-touch-action: pan-y;
+touch-action: pinch-zoom;;
 background: var(--bg-gradient); /* από απλό λευκό σε gradient */
 }
 
