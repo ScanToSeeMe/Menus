@@ -1,422 +1,96 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
-
-    <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-RBWDHEBBSD"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-RBWDHEBBSD');
-  </script>
-
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ScanToSee</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
-  
-  <!-- Web favicon (γενικό) -->
-  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
-  <link rel="shortcut icon" href="assets/favicon.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.png">
+  <title>Cafe Mpournelis — Επιλογές Μενού</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1f1f1f;
+      --accent: #b59b7e; /* ελαφρύ, “cool” καφέ */
+      --accent-weak: #eae3db;
+    }
 
-  <!-- Apple Touch Icon (για iOS Home Screen) -->
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
 
-  <!-- Android & Chrome (manifest για PWA/shortcut) -->
-  <link rel="manifest" href="assets/site.webmanifest">
-  <meta name="theme-color" content="#ffffff">
+    .wrap {
+      width: 100%;
+      max-width: 520px;
+      text-align: center;
+    }
 
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&display=swap" rel="stylesheet">
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.6rem, 2.3vw + 1rem, 2.2rem);
+      letter-spacing: 0.2px;
+    }
+    p.sub {
+      margin: 0 0 28px;
+      color: #666;
+      font-size: 0.98rem;
+    }
 
+    .btns {
+      display: grid;
+      gap: 14px;
+    }
+    a.btn {
+      display: inline-block;
+      text-decoration: none;
+      padding: 14px 18px;
+      border: 1px solid var(--accent);
+      color: var(--bg);
+      background: var(--accent);
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1.02rem;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease, color 0.2s ease;
+      text-align: center;
+    }
+    a.btn.secondary {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--accent);
+    }
+    a.btn:active { transform: scale(0.98); }
+    a.btn:hover { box-shadow: 0 6px 18px rgba(181, 155, 126, 0.25); }
 
-  <link rel="stylesheet" href="style.css" />
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7392605069972041"
-     crossorigin="anonymous"></script>
+    footer {
+      margin-top: 22px;
+      color: #888;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
+  <main class="wrap">
+    <h1>Cafe Mpournelis</h1>
+    <p class="sub"> Πλατεία, Χώρα Μεσσηνίας</p>
 
-    <nav class="topbar">
-      <div class="container">
-        <a href="#" class="logo">
-          <img src="assets/favicon.ico" alt="FlexFolio Logo" style="height: 28px; vertical-align: middle; margin-right: 8px;">
-          ScanToSee Me
-        </a>
-
-        <div class="nav-toggle" onclick="toggleMenu()">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-
-        <ul class="nav-links">
-          <li><a href="#templates" id="nav-templates">Σχέδια</a></li>
-          <li><a href="#pricing" id="nav_pricing">Πακέτα</a></li>
-          <li><a href="#form" id="nav-form">Φόρμα Παραγγελίας</a></li>
-          <li><a href="#faq" id="nav-faq">Συχνές Ερωτήσεις</a></li>
-          <div id="langBtn" class="lang-flag-btn active-el" onclick="toggleLanguage()">
-            <span id="flagIcon">🇬🇷</span>
-          </div>
-         <!-- <li>
-              <button id="cartButton" onclick="toggleCart()" aria-label="Καλάθι" style="
-                background: none;
-                border: none;
-                font-size: 1.4rem;
-                cursor: pointer;
-                position: relative;
-                color: #0d47a1;
-              ">
-                🛒
-                <span id="cartBadge" style="
-                  position: absolute;
-                  top: -4px;
-                  right: -8px;
-                  background: #ff5252;
-                  color: white;
-                  font-size: 0.7rem;
-                  padding: 1px 5px;
-                  border-radius: 50%;
-                  display: none;
-                ">1</span>
-              </button>
-            </li>
-            -->
-        </ul>
-      </div>
-    </nav>
+    <div class="btns">
+      <a class="btn"           href="menu1.html" aria-label="Μετάβαση στο Μενού 1">Classic Menu 1</a>
+      <a class="btn"           href="menu2.html" aria-label="Μετάβαση στο Μενού 2">Classic Menu 2</a>
+      <!--<a class="btn"           href="menu3.html" aria-label="Μετάβαση στο Μενού 3">Classic Menu 3</a>-->
 
 
+      <a class="btn secondary" href="menu4.html" aria-label="Μετάβαση στο Μοντέρνο Μίνιμαλ Μενού">Modern Menu 1</a>
+      <a class="btn secondary" href="menu5.html" aria-label="Μετάβαση στο Μοντέρνο Μίνιμαλ Μενού 2">Modern Menu 2</a>
+      <a class="btn secondary" href="menu6.html" aria-label="Μετάβαση στο Μοντέρνο Μίνιμαλ Μενού 3">Modern Menu 3</a>
+    </div>
 
-    <div id="particles-bg"></div>
-
-  <header class="network-hero-bg animated-header-reveal">
-    <svg class="network-bg" width="100%" height="100%" viewBox="0 0 1440 320" preserveAspectRatio="none">
-      <polyline points="0,160 120,180 240,140 360,200 480,160 600,180 720,140 840,200 960,160 1080,180 1200,140 1320,200 1440,160"
-        fill="none" stroke="#40c4ff" stroke-width="2" opacity="0.12"/>
-      <polyline points="0,200 120,220 240,180 360,240 480,200 600,220 720,180 840,240 960,200 1080,220 1200,180 1320,240 1440,200"
-        fill="none" stroke="#00bcd4" stroke-width="2" opacity="0.10"/>
-    </svg>
-    <h1>Διάλεξε το δικό σου προσωπικό CV site</h1>
-    <p id="typed-effect">Επαγγελματικό, δυναμικό, επεξεργάσιμο</p>
-  </header>
-
-      <section id="how-it-works" class="how-it-works-fun" data-aos="fade-up">
-        <div class="container">
-          <h2>Φτιάξε τη σελίδα σου σε 3 βήματα</h2>
-          <div class="steps-wrapper">
-            <div class="step">
-              <span class="step-icon">🎨</span>
-              <div id="step1">Επίλεξε το σχέδιο (template) που σου αρέσει</div>
-            </div>
-            <div class="step">
-              <span class="step-icon">💼</span>
-              <div id="step2">Διάλεξε το πακέτο που σου ταιριάζει (Basic ή Standard)</div>
-            </div>
-            <div class="step">
-              <span class="step-icon">📝</span>
-              <div id="step3">Συμπλήρωσε τη φόρμα με τα στοιχεία σου</div>
-            </div>
-          </div>
-          <p class="how-it-works-note">
-            Σύντομα θα επικοινωνήσουμε μαζί σου με όλες τις λεπτομέρειες και οδηγίες για την υλοποίηση.
-          </p>
-        </div>
-      </section>
-
-      <section id="templates" data-aos="fade-up" class="section-colored network-section-bg">
-        <svg class="network-bg" width="100%" height="100%" viewBox="0 0 1440 320" preserveAspectRatio="none">
-          <!-- Top left cluster -->
-          <circle cx="120" cy="60" r="12" fill="#00bcd4" opacity="0.18"/>
-          <circle cx="220" cy="40" r="7" fill="#40c4ff" opacity="0.13"/>
-          <line x1="120" y1="60" x2="220" y2="40" stroke="#00bcd4" stroke-width="1.5" opacity="0.13"/>
-          <polygon points="140,100 150,120 120,120" fill="#40c4ff" opacity="0.10"/>
-          <line x1="120" y1="60" x2="140" y2="100" stroke="#40c4ff" stroke-width="1.5" opacity="0.10"/>
-          <circle cx="140" cy="100" r="6" fill="#00bcd4" opacity="0.13"/>
-
-          <!-- Top right cluster -->
-          <circle cx="1320" cy="70" r="10" fill="#40c4ff" opacity="0.16"/>
-          <circle cx="1420" cy="30" r="8" fill="#00bcd4" opacity="0.13"/>
-          <line x1="1320" y1="70" x2="1420" y2="30" stroke="#40c4ff" stroke-width="1.5" opacity="0.13"/>
-          <polygon points="1340,110 1350,130 1320,130" fill="#00bcd4" opacity="0.10"/>
-          <line x1="1320" y1="70" x2="1340" y2="110" stroke="#00bcd4" stroke-width="1.5" opacity="0.10"/>
-          <circle cx="1340" cy="110" r="5" fill="#40c4ff" opacity="0.13"/>
-
-          <!-- Center diagonal -->
-          <circle cx="720" cy="160" r="14" fill="#40c4ff" opacity="0.12"/>
-          <circle cx="800" cy="100" r="8" fill="#00bcd4" opacity="0.13"/>
-          <line x1="720" y1="160" x2="800" y2="100" stroke="#00bcd4" stroke-width="1.5" opacity="0.10"/>
-          <polygon points="760,180 770,200 740,200" fill="#00bcd4" opacity="0.09"/>
-          <line x1="720" y1="160" x2="760" y2="180" stroke="#40c4ff" stroke-width="1.5" opacity="0.10"/>
-          <circle cx="760" cy="180" r="6" fill="#40c4ff" opacity="0.13"/>
-
-          <!-- Bottom left cluster -->
-          <circle cx="180" cy="280" r="9" fill="#00bcd4" opacity="0.15"/>
-          <circle cx="100" cy="240" r="7" fill="#40c4ff" opacity="0.13"/>
-          <line x1="180" y1="280" x2="100" y2="240" stroke="#40c4ff" stroke-width="1.5" opacity="0.13"/>
-          <polygon points="120,300 130,320 100,320" fill="#40c4ff" opacity="0.09"/>
-          <line x1="180" y1="280" x2="120" y2="300" stroke="#00bcd4" stroke-width="1.5" opacity="0.10"/>
-          <circle cx="120" cy="300" r="5" fill="#00bcd4" opacity="0.13"/>
-
-          <!-- Bottom right cluster -->
-          <circle cx="1300" cy="270" r="10" fill="#40c4ff" opacity="0.15"/>
-          <circle cx="1400" cy="230" r="7" fill="#00bcd4" opacity="0.13"/>
-          <line x1="1300" y1="270" x2="1400" y2="230" stroke="#00bcd4" stroke-width="1.5" opacity="0.13"/>
-          <polygon points="1320,310 1330,330 1300,330" fill="#40c4ff" opacity="0.09"/>
-          <line x1="1300" y1="270" x2="1320" y2="310" stroke="#40c4ff" stroke-width="1.5" opacity="0.10"/>
-          <circle cx="1320" cy="310" r="6" fill="#00bcd4" opacity="0.13"/>
-        </svg>
-        <div class="container">
-          <h2 style="color: white;">Επίλεξε ένα από τα Templates που εμπιστεύτηκαν επαγγελματίες</h2>
-          <div class="template-grid">
-
-              <div class="template-card" data-template-url="/mpournelis/index.html">
-                <div class="template-preview-wrapper">
-                  <img src="assets/img/template1.png" alt="Template 1" class="template-preview">
-                </div>
-                <div class="button-group">
-                  <button class="preview-btn">🔍 Preview</button>
-                  <button onclick="addToCart('template1')" class="choose-btn">🛒Επίλεξε</button>
-                </div>
-                <p class="template-note">Διαθέσιμο και στα δύο πακέτα</p>
-              </div>
-
-              <div class="template-card" data-template-url="templates/template2/index.html">
-                <div class="template-preview-wrapper">
-                <img src="assets/img/template2.png" alt="Template 2" class="template-preview">
-                </div>
-                <div class="button-group">
-                    <button class="preview-btn">🔍 Preview</button>
-                    <button onclick="addToCart('template2')" class="choose-btn">🛒Επίλεξε</button>
-                </div>
-                <p id="availablebasic" class="template-note">Διαθέσιμο μόνο στο BASIC</p>
-              </div>
-
-              <div class="template-card" data-template-url="templates/template3/index.html">
-                <img src="assets/img/template3.png" alt="Template 3" class="template-preview">
-                <div class="button-group">
-                    <button class="preview-btn">🔍 Preview</button>
-                    <button onclick="addToCart('template3')" class="choose-btn">🛒Επίλεξε</button>
-                </div>
-                <p id="availablebasic2" class="template-note">Διαθέσιμο μόνο στο BASIC</p>
-              </div>
-
-          </div>
-        </div>
-        <p id="selectedDisplay" style="color: white;">Δεν έχει επιλεχθεί ακόμα template.</p>
-      </section>
-
-      <section id="pricing" data-aos="fade-up">
-        <h2 id="pricing-title" style="text-align:center; margin-bottom: 40px;">Πακέτα</h2>
-        <div class="container">
-          <div class="pricing-grid lively-pricing-grid">
-            <div class="pricing-card lively-pricing-card">
-              <div class="price-tag lively-price-tag">179€</div>
-              <h3>BASIC</h3>
-              <ul>
-                <li>Static website</li>
-                <li>Mobile friendly</li>
-                <li>5 free mini changes</li>
-                <li>Domain not included*</li>
-              </ul>
-            <a class="order-button lively-order-button" id="order-basic" onclick="selectPlan('BASIC')">🛒 Επίλεξε</a>            </div>
-            <div class="pricing-card featured lively-pricing-card lively-featured">
-              <div class="lively-badge">Best Value</div>
-              <div class="price-tag lively-price-tag">299€</div>
-              <h3>STANDARD</h3>
-              <ul>
-                <li>Editable site</li>
-                <li>30-day support</li>
-                <li>Unlimited edits</li>
-                <li>Domain included(1y)**</li>
-              </ul>
-          <a class="order-button lively-order-button" id="order-pro" onclick="selectPlan('STANDARD')">🛒 Επίλεξε</a>            </div>
-          </div>
-          <div id="customPopupOverlay" style="display:none;">
-            <div id="customPopup">
-              <span id="customPopupClose">&times;</span>
-              <div id="customPopupContent">
-                <!-- Εδώ θα μπαίνει το μήνυμα -->
-              </div>
-            </div>
-          </div>
-          <p id="selectedPlanDisplay" style="text-align: center; margin-top: 20px; font-size: 1rem; color: #2e7d32;"></p>
-        </div>
-      </section>
-
-      <section id="form" data-aos="fade-up" class="cv-form-section-bg">
-        <div class="container">
-          <h2 style="color: black;"> Συμπλήρωσε τη φόρμα και θα επικοινωνήσουμε εμείς μαζί σου!</h2>
-          <div id="formSelectionSummary" style="color: black;">
-            Δεν έχεις επιλέξει ακόμα template ή πακέτο.
-          </div>
-          <div id="formUnavailableMsg" style="display:none; color:#150d0d; text-align:center; margin-bottom:18px; font-weight:600;">
-            Οι παραγγελίες δεν είναι ακόμα διαθέσιμες. Θα είμαστε σύντομα κοντά σας! Ευχαριστούμε για το ενδιαφέρον σας. 😊
-          </div>
-          <form id="orderForm" class="cv-form" action="https://formspree.io/f/xblynayz" method="POST">
-            <input type="text" name="name" id="form-name" placeholder="Ονοματεπώνυμο" required>
-            <input type="email" name="email" id="form-email" placeholder="Email" required>
-            <input type="hidden" name="selected_template" id="selected_template">
-            <input type="hidden" name="selected_plan" id="selected_plan">
-            <input type="number" name="age" id="form-age" placeholder="Ηλικία (προαιρετικό)" min="14" max="100">
-            <textarea name="bio" id="form-bio" placeholder="Σύντομο bio (π.χ. τι κάνεις, τι έχεις σπουδάσει κλπ)"></textarea>
-            <textarea name="purpose" id="form-purpose" placeholder="Πού σκοπεύεις να χρησιμοποιήσεις το CV site; (LinkedIn, εύρεση εργασίας, προσωπικό blog...)"></textarea>
-            <button type="submit" id="form-submit">Αποστολή</button>
-          </form>
-        </div>
-      </section>
-
-      <section id="faq" data-aos="fade-up">
-        <h2>Συχνές Ερωτήσεις</h2>
-
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            ❓ <strong>Πόσο κοστίζει ένα CV site;</strong>
-          </div>
-          <div class="faq-answer">
-            <p>Υπάρχουν δύο βασικά πακέτα: το BASIC στα 179€ (στατικό site, mobile friendly, 5 δωρεάν μικροαλλαγές) και το Standard στα 299€ (δυνατότητα επεξεργασίας, απεριόριστες αλλαγές, domain για 1 χρόνο και υποστήριξη 30 ημερών). Έτσι μπορείς να διαλέξεις αυτό που σου ταιριάζει καλύτερα!</p>
-          </div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            ❓ <strong>Σε πόσες μέρες θα είναι έτοιμο το site μου;</strong>
-          </div>
-          <div class="faq-answer">
-            <p>Συνήθως το site σου είναι έτοιμο μέσα σε 1 έως 4 εργάσιμες ημέρες από τη στιγμή που θα μας στείλεις τα απαραίτητα στοιχεία και υλικό. Ανάλογα με το πακέτο και τις επιπλέον απαιτήσεις, ο χρόνος μπορεί να διαφέρει ελάχιστα.</p>
-          </div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            ❓ <strong>Μπορώ να προσαρμόσω το template;</strong>
-          </div>
-          <div class="faq-answer">
-            <p>Βεβαίως! Μπορείς να αλλάξεις κείμενα, φωτογραφίες, χρώματα και γραμματοσειρές. Αν επιλέξεις το Standard πακέτο, έχεις και τη δυνατότητα να κάνεις όσες αλλαγές θέλεις, ακόμα και μετά την παράδοση, μέσω του dashboard ή με τη βοήθειά μας.</p>
-          </div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            ❓ <strong>Θα μπορώ να επεξεργάζομαι το site μόνος/η μου;</strong>
-          </div>
-          <div class="faq-answer">
-            <p>Ναι! Με το Standard+ πακέτο έχεις πρόσβαση σε εύχρηστο dashboard για να ενημερώνεις το περιεχόμενο του site σου όποτε θέλεις, χωρίς να χρειάζεσαι τεχνικές γνώσεις. Για το BASIC πακέτο, μπορείς να μας ζητήσεις μικρές αλλαγές δωρεάν (έως 5 φορές).</p>
-          </div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            ❓ <strong>Τι χρειάζεται να στείλω για να ξεκινήσει η κατασκευή;</strong>
-          </div>
-          <div class="faq-answer">
-            <p>Αρκεί να συμπληρώσεις τη φόρμα ενδιαφέροντος με τα βασικά στοιχεία σου. Θα χρειαστούμε το βιογραφικό σου, μια φωτογραφία, στοιχεία επικοινωνίας και ό,τι άλλο θέλεις να εμφανίζεται στο site σου. Όσο πιο πλήρη τα στοιχεία, τόσο πιο γρήγορα ξεκινάμε!</p>
-          </div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            ❓ <strong>Μπορώ να αγοράσω εγώ domain και να το συνδέσετε εσείς;</strong>
-          </div>
-          <div class="faq-answer">
-            <p>Φυσικά! Αν έχεις ήδη domain ή θέλεις να το αγοράσεις μόνος/η σου, μπορούμε να το συνδέσουμε εμείς με το site σου, χωρίς επιπλέον χρέωση. Εναλλακτικά, στο Standard+ πακέτο αναλαμβάνουμε εμείς την αγορά και διαχείριση του domain για τον πρώτο χρόνο.</p>
-          </div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            ❓ <strong>Μπορώ να συνδέσω το site με LinkedIn ή άλλα social;</strong>
-          </div>
-          <div class="faq-answer">
-            <p>Ναι, μπορείς να προσθέσεις συνδέσμους για LinkedIn, GitHub, email, ακόμα και το προσωπικό σου domain. Έτσι, οι επισκέπτες θα βρίσκουν εύκολα όλα τα προφίλ και τα στοιχεία σου.</p>
-          </div>
-        </div>
-
-        <div class="faq-item" onclick="toggleFaq(this)">
-          <div class="faq-question">
-            ❓ <strong>Παρέχετε υποστήριξη μετά την παράδοση;</strong>
-          </div>
-          <div class="faq-answer">
-            <p>Με το Standard πακέτο έχεις δωρεάν υποστήριξη για 30 ημέρες μετά την παράδοση για οποιαδήποτε αλλαγή ή απορία. Μετά το διάστημα αυτό, μπορείς να επιλέξεις πακέτο υποστήριξης ή να μας ζητήσεις μεμονωμένες υπηρεσίες.</p>
-          </div>
-        </div>
-      </section>
-
-      <button id="scrollToTop" onclick="scrollToTop()" aria-label="Επιστροφή στην κορυφή">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="white">
-          <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.59 5.58L20 12l-8-8-8 8z"/>
-        </svg>
-      </button>
-
-
-
-      
-      <div id="footer-placeholder"></div>
-
-      <div id="cartPopup" style="
-        position: fixed;
-        right: 20px;
-        top: 70px;
-        background: white;
-        border: 1px solid #ccc;
-        border-radius: 12px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        padding: 16px;
-        width: 300px;
-        z-index: 999;
-        display: none;
-        font-family: 'Inter', sans-serif;
-      ">
-        <h3 style="margin-top: 0;">🛒 Επιλογές σου</h3>
-        <p><strong>Template:</strong> <span id="popupTemplate">–</span></p>
-        <p><strong>Πακέτο:</strong> <span id="popupPlan">–</span></p>
-
-        <div style="margin-top: 12px; display: flex; justify-content: space-between;">
-          <a href="#form" onclick="toggleCart()" style="
-            background-color: #0d47a1;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-          ">Συμπλήρωσε Φόρμα</a>
-          <button onclick="clearCart()" style="
-            background: none;
-            border: none;
-            color: #ff5252;
-            font-weight: bold;
-            cursor: pointer;
-          ">✖ Καθαρισμός</button>
-        </div>
-      </div>
-
-      <div id="chatbot-button">💬 <span id="chatbot-open">Βοήθεια;</span></div>
-
-      <div id="chatbot-box" class="hidden">
-        <div id="chatbot-header">🤖 <span id="chatbot-title">Βοηθός Επιλογής Template</span></div>
-        <div id="chatbot-content">
-          <p id="chatbot-msg">Γεια σου! 👋 Θες να σε βοηθήσω να βρεις το κατάλληλο template;</p>
-          <button onclick="nextStep(1)" id="chatbot-yes">Ναι, φυσικά!</button>
-        </div>
-      </div>
-
-
-
-
-
-    <script src="assets/js/chatbot.js"></script>
-    <script src="assets/js/order.js"></script>
-    <script src="assets/js/lang.js"></script>
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script src="assets/js/main.js"></script>
-
-
-
+    <footer>Διάλεξε ποιο μενού θέλεις να δεις</footer>
+  </main>
 </body>
 </html>

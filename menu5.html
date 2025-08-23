@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.png">
+  <title>Cafe Mpournelis — Μενού</title>
+  <style>
+    :root{
+      --bg: #0e0f11;
+      --panel: #16181c;
+      --panel-2: #1c1f24;
+      --text: #e9ecef;
+      --muted: #9aa0a6;
+      --line: #24272d;
+      --accent: #26c6da;      /* cold teal */
+      --accent-weak: #142227; /* subtle background */
+      --chip-bg: #13171a;
+      --price-pill: #0e2d32;
+      --radius-lg: 16px;
+      --radius-md: 12px;
+      --radius-sm: 10px;
+      --shadow-1: 0 6px 20px rgba(0,0,0,0.25);
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height:100%; }
+    html { scroll-behavior: smooth; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Helvetica Neue", sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 80% -10%, #122126 0%, #0e0f11 50%) no-repeat, var(--bg);
+    }
+
+    /* Layout */
+    .app{
+      display:grid;
+      grid-template-columns: 280px minmax(0,1fr);
+      min-height:100dvh;
+    }
+    @media (max-width: 960px){
+      .app{ grid-template-columns: 1fr; }
+    }
+
+    /* Sidebar */
+    aside.sidebar{
+      position: sticky;
+      top:0;
+      height:100dvh;
+      padding: 28px 22px;
+      border-right: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(22,24,28,0.85), rgba(22,24,28,0.85));
+      backdrop-filter: blur(6px);
+    }
+    @media (max-width: 960px){
+      aside.sidebar{
+        position: fixed;
+        bottom: 0;
+        top: auto;
+        height: auto;
+        width: 100%;
+        padding: 10px 12px 12px;
+        border-right: none;
+        border-top: 1px solid var(--line);
+        background: rgba(19,23,26,0.9);
+        z-index: 100;
+      }
+    }
+
+    .brand{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+      margin-bottom: 28px;
+    }
+    .brand h1{
+      margin:0 0 4px 0;
+      font-size: clamp(1.2rem, 1.2vw + 1rem, 1.6rem);
+      letter-spacing: 0.2px;
+    }
+    .brand p{
+      margin:0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    nav.categories{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    @media (max-width: 960px){
+      nav.categories{
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 8px;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+      }
+    }
+    .cat-link{
+      appearance:none;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 10px 12px;
+      color: var(--text);
+      text-decoration:none;
+      background: var(--chip-bg);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      transition: background 0.2s ease, transform 0.12s ease, border-color 0.2s ease;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .cat-link:hover{ background: var(--accent-weak); border-color: #18353b; }
+    .cat-link:active{ transform: scale(0.98); }
+    .cat-dot{
+      width:8px; height:8px; border-radius:999px; background: var(--accent);
+      box-shadow: 0 0 0 3px rgba(38,198,218,0.15);
+    }
+
+    /* Main */
+    main.content{
+      padding: 32px clamp(16px, 4vw, 40px) 120px; /* extra bottom for mobile nav */
+    }
+    @media (min-width: 961px){
+      main.content{ padding-bottom: 40px; }
+    }
+
+    .note{
+      margin: 4px 0 20px 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    section.category{
+      margin: 18px 0 26px;
+    }
+    .category-header{
+      display:flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .category h2{
+      margin:0;
+      font-size: clamp(1.05rem, 1.1vw + 1rem, 1.35rem);
+      letter-spacing: 0.2px;
+    }
+    .category .desc{
+      margin:0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .list{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 640px){
+      .list{ grid-template-columns: 1fr 1fr; }
+    }
+    @media (min-width: 1080px){
+      .list{ grid-template-columns: 1fr 1fr 1fr; }
+    }
+
+    .item{
+      position: relative;
+      display:grid;
+      grid-template-columns: 1fr auto;
+      align-items:start;
+      gap: 8px 12px;
+      padding: 16px 16px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: linear-gradient(180deg, var(--panel), var(--panel-2));
+      box-shadow: var(--shadow-1);
+      transition: transform 0.16s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .item:hover{
+      transform: translateY(-2px);
+      border-color: #21343a;
+      box-shadow: 0 10px 28px rgba(0,0,0,0.32);
+    }
+    .item h3{
+      margin:0;
+      font-size: 1.02rem;
+      letter-spacing: 0.2px;
+    }
+    .item p{
+      grid-column: 1 / -1;
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+      line-height: 1.35;
+    }
+
+    .price{
+      align-self: start;
+      margin-left: 8px;
+      font-weight: 800;
+      color: var(--accent);
+      font-variant-numeric: tabular-nums;
+      background: linear-gradient(180deg, var(--price-pill), #0b2428);
+      border: 1px solid #1a3b41;
+      border-radius: 999px;
+      padding: 6px 10px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+
+    /* Top utility bar (optional back/home) */
+    header.topbar{
+      position: sticky;
+      top:0;
+      z-index: 20;
+      padding: 12px clamp(16px, 4vw, 28px);
+      background: linear-gradient(180deg, rgba(14,15,17,0.9), rgba(14,15,17,0.55));
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(6px);
+    }
+    .topbar-inner{
+      max-width: 1200px;
+      margin: 0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap: 8px;
+    }
+    .btn{
+      appearance:none;
+      border:1px solid #1f3439;
+      background: #152024;
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease, border-color 0.2s ease;
+      text-decoration: none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .btn:hover{ background: #0f1a1d; border-color:#25464e; }
+    .btn:active{ transform: scale(0.98); }
+    .btn.primary{
+      background: var(--accent);
+      border-color: transparent;
+      color: #051316;
+    }
+    .btn.primary:hover{ filter: brightness(1.05); }
+
+    footer.site{
+      margin-top: 28px;
+      padding: 22px clamp(16px, 4vw, 28px) 40px;
+      color: var(--muted);
+      font-size: 0.94rem;
+      display:flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--line);
+      background: rgba(19,23,26,0.5);
+    }
+
+    /* Focus styles for accessibility */
+    a:focus, button:focus{
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" aria-label="Πλοήγηση κατηγοριών">
+      <div class="brand">
+        <div>
+          <h1>Cafe Mpournelis</h1>
+          <p>Στην πλατεία της Χώρας Μεσσηνίας</p>
+        </div>
+      </div>
+      <nav class="categories">
+        <a class="cat-link" href="#coffees"><span class="cat-dot"></span> Καφέδες</a>
+        <a class="cat-link" href="#softs"><span class="cat-dot"></span> Αναψυκτικά</a>
+        <a class="cat-link" href="#icecream"><span class="cat-dot"></span> Παγωτά</a>
+        <a class="cat-link" href="#drinks"><span class="cat-dot"></span> Ποτά</a>
+        <a class="cat-link" href="#cocktails"><span class="cat-dot"></span> Κοκτέιλς</a>
+        <a class="cat-link" href="#snacks"><span class="cat-dot"></span> Σνακ</a>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="content" role="main">
+      <header class="topbar" aria-hidden="true">
+       <!-- <div class="topbar-inner">
+           Προαιρετικό: <a class="btn" href="index.html">← Αρχική</a> 
+          <a class="btn primary" href="#coffees">Μετάβαση στην αρχή</a>
+        </div>-->
+      </header>
+
+      <p class="note">Οι τιμές είναι ενδεικτικές και περιλαμβάνουν Φ.Π.Α.</p>
+
+      <section id="coffees" class="category" aria-labelledby="coffees-title">
+        <div class="category-header">
+          <h2 id="coffees-title">Καφέδες</h2>
+          <p class="desc">Κλασικοί και κρύοι καφέδες.</p>
+        </div>
+        <div class="list">
+          <div class="item">
+            <h3>Espresso</h3>
+            <div class="price">2.20€</div>
+            <p>Μονός.</p>
+          </div>
+          <div class="item">
+            <h3>Double Espresso</h3>
+            <div class="price">2.80€</div>
+            <p>Διπλός.</p>
+          </div>
+          <div class="item">
+            <h3>Cappuccino</h3>
+            <div class="price">3.20€</div>
+            <p>Με αφρό γάλακτος.</p>
+          </div>
+          <div class="item">
+            <h3>Latte</h3>
+            <div class="price">3.30€</div>
+            <p>Με περισσότερο γάλα.</p>
+          </div>
+          <div class="item">
+            <h3>Freddo Espresso</h3>
+            <div class="price">3.00€</div>
+            <p>Κρύος εσπρέσο.</p>
+          </div>
+          <div class="item">
+            <h3>Freddo Cappuccino</h3>
+            <div class="price">3.50€</div>
+            <p>Κρύος με αφρό γάλακτος.</p>
+          </div>
+          <div class="item">
+            <h3>Ελληνικός Καφές</h3>
+            <div class="price">2.40€</div>
+            <p>Παραδοσιακός.</p>
+          </div>
+          <div class="item">
+            <h3>Decaf</h3>
+            <div class="price">3.00€</div>
+            <p>Χωρίς καφεΐνη.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="softs" class="category" aria-labelledby="softs-title">
+        <div class="category-header">
+          <h2 id="softs-title">Αναψυκτικά</h2>
+          <p class="desc">Κλασικά αναψυκτικά.</p>
+        </div>
+        <div class="list">
+          <div class="item">
+            <h3>Νερό 500ml</h3>
+            <div class="price">0.50€</div>
+            <p>Εμφιαλωμένο.</p>
+          </div>
+          <div class="item">
+            <h3>Αναψυκτικό Κόλα</h3>
+            <div class="price">2.20€</div>
+            <p>330ml.</p>
+          </div>
+          <div class="item">
+            <h3>Λεμονάδα</h3>
+            <div class="price">2.40€</div>
+            <p>Δροσερή.</p>
+          </div>
+          <div class="item">
+            <h3>Πορτοκαλάδα</h3>
+            <div class="price">2.40€</div>
+            <p>Με χυμό πορτοκαλιού.</p>
+          </div>
+          <div class="item">
+            <h3>Soda Water</h3>
+            <div class="price">1.80€</div>
+            <p>Ανθρακούχο νερό.</p>
+          </div>
+          <div class="item">
+            <h3>Iced Tea Ροδάκινο</h3>
+            <div class="price">2.60€</div>
+            <p>Παγωμένο.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="icecream" class="category" aria-labelledby="icecream-title">
+        <div class="category-header">
+          <h2 id="icecream-title">Παγωτά</h2>
+          <p class="desc">Γεύσεις παγωτού.</p>
+        </div>
+        <div class="list">
+          <div class="item">
+            <h3>Μπάλα Βανίλια</h3>
+            <div class="price">1.80€</div>
+            <p>Κλασική.</p>
+          </div>
+          <div class="item">
+            <h3>Μπάλα Σοκολάτα</h3>
+            <div class="price">1.80€</div>
+            <p>Πλούσια.</p>
+          </div>
+          <div class="item">
+            <h3>Μπάλα Φράουλα</h3>
+            <div class="price">1.80€</div>
+            <p>Με κομμάτια φρούτου.</p>
+          </div>
+          <div class="item">
+            <h3>Παγωτό Μπανάνα Σπλιτ</h3>
+            <div class="price">4.50€</div>
+            <p>Με σιρόπι σοκολάτας.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="drinks" class="category" aria-labelledby="drinks-title">
+        <div class="category-header">
+          <h2 id="drinks-title">Ποτά</h2>
+          <p class="desc">Μπύρες, κρασί και αποστάγματα.</p>
+        </div>
+        <div class="list">
+          <div class="item">
+            <h3>Μπύρα Draft 330ml</h3>
+            <div class="price">3.00€</div>
+            <p>Ξανθιά.</p>
+          </div>
+          <div class="item">
+            <h3>Μπύρα Μπουκάλι</h3>
+            <div class="price">3.20€</div>
+            <p>Pilsner ή Lager.</p>
+          </div>
+          <div class="item">
+            <h3>Κρασί Λευκό ποτήρι</h3>
+            <div class="price">3.50€</div>
+            <p>Αρωματικό.</p>
+          </div>
+          <div class="item">
+            <h3>Κρασί Ροζέ ποτήρι</h3>
+            <div class="price">3.50€</div>
+            <p>Δροσερό.</p>
+          </div>
+          <div class="item">
+            <h3>Ούζο/Τσίπουρο 50ml</h3>
+            <div class="price">3.00€</div>
+            <p>Με ή χωρίς γλυκάνισο.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="cocktails" class="category" aria-labelledby="cocktails-title">
+        <div class="category-header">
+          <h2 id="cocktails-title">Κοκτέιλς</h2>
+          <p class="desc">Κλασικά κοκτέιλ.</p>
+        </div>
+        <div class="list">
+          <div class="item">
+            <h3>Mojito</h3>
+            <div class="price">7.50€</div>
+            <p>Ρούμι, λάιμ, δυόσμος, σόδα.</p>
+          </div>
+          <div class="item">
+            <h3>Aperol Spritz</h3>
+            <div class="price">7.50€</div>
+            <p>Aperol, Prosecco, σόδα.</p>
+          </div>
+          <div class="item">
+            <h3>Margarita</h3>
+            <div class="price">8.00€</div>
+            <p>Τεκίλα, λάιμ, triple sec.</p>
+          </div>
+          <div class="item">
+            <h3>Espresso Martini</h3>
+            <div class="price">8.50€</div>
+            <p>Vodka, espresso, coffee liqueur.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="snacks" class="category" aria-labelledby="snacks-title">
+        <div class="category-header">
+          <h2 id="snacks-title">Σνακ</h2>
+          <p class="desc">Μικρά συνοδευτικά.</p>
+        </div>
+        <div class="list">
+          <div class="item">
+            <h3>Τοστ Ζαμπόν-Τυρί</h3>
+            <div class="price">3.20€</div>
+            <p>Κλασικό.</p>
+          </div>
+          <div class="item">
+            <h3>Κρουασάν Βουτύρου</h3>
+            <div class="price">2.40€</div>
+            <p>Φρέσκο.</p>
+          </div>
+          <div class="item">
+            <h3>Μπαγκέτα Κοτόπουλο</h3>
+            <div class="price">4.20€</div>
+            <p>Κοτόπουλο, μαρούλι, σως γιαουρτιού.</p>
+          </div>
+          <div class="item">
+            <h3>Μπάρες Δημητριακών</h3>
+            <div class="price">1.80€</div>
+            <p>Με ξηρούς καρπούς.</p>
+          </div>
+        </div>
+      </section>
+
+      <footer class="site" style="margin-top: 40px;">
+        <span>© Cafe Mpournelis</span>
+        <span>Πλατεία Χώρα Μεσσηνίας</span>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

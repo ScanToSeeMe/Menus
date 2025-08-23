@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cafe Mpournelis Chora</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    #menu-container { margin-top: 16px; }
+    img { max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px; display: block; }
+
+    /* Σε κινητά: η εικόνα να πιάνει όλη την οθόνη */
+    @media (max-width: 768px) {
+      html, body { margin: 0; padding: 0; height: 100%; }
+      body { padding: 0; }
+      h3 { display: none; } /* Απόκρυψη τίτλου για να μην “τρώει” χώρο. Αφαίρεσέ το αν τον θέλεις. */
+      img {
+        width: 100vw;
+        height: 100dvh;      /* γεμίζει το διαθέσιμο ύψος σε mobile */
+        object-fit: contain; /* κρατάει αναλογία χωρίς κόψιμο (crop) */
+        border: none;
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h3>Το Μενού μας</h3>
+  <img src="menu2.png" alt="Το Μενού μας" />
+  <div id="menu-container"></div>
+</body>
+</html>
