@@ -46,10 +46,14 @@
   </header>
 
   <!-- HERO -->
-  <section class="hero" data-aos="fade-up">
-    <h1>Digital Menus, Modern & Minimal</h1>
-    <p>Κάνε upgrade το μενού σου με το <strong>ScanToSeeMe</strong>. Επιλογές σε Classic και Modern e-Menus.</p>
-  </section>
+    <section class="hero" data-aos="fade-up">
+      <h1>Digital Menus, Modern & Minimal</h1>
+      <p>
+        Κάνε upgrade το μενού σου με το <strong>ScanToSeeMe</strong>.  
+        Επιλογές σε Classic και Modern e-Menus με <strong>δωρεάν QR Codes</strong> για εύκολη πρόσβαση.
+      </p>
+    </section>
+
 
 
 
@@ -80,6 +84,20 @@
     </div>
   </section>
 
+
+  <!--<section class="qrcodes" data-aos="fade-up">
+  <h2>QR Codes για το Μενού σας</h2>
+  <p>
+    Κάθε e-Menu συνοδεύεται από μοναδικό <strong>QR Code</strong>, 
+    ώστε οι πελάτες σας να έχουν άμεση πρόσβαση στο μενού σας απλά σκανάροντας με το κινητό τους.
+  </p>
+  <div class="qr-sample">
+    <img src="sample-qr.png" alt="QR Code Example" width="150">
+  </div>
+</section>-->
+
+
+
   <!-- CONTACT -->
   <section id="contact" data-aos="fade-up">
     <h2>Επικοινωνία</h2>
@@ -104,14 +122,24 @@
   <script>AOS.init({ duration: 900, once: true });</script>
 
 
-  <script>
-  const toggle = document.querySelector(".menu-toggle");
-  const navLinks = document.querySelector(".nav-links");
+    <script>
+      const toggle = document.querySelector(".menu-toggle");
+      const navLinks = document.querySelector(".nav-links");
+      const links = document.querySelectorAll(".nav-links a");
 
-  toggle.addEventListener("click", () => {
-    navLinks.classList.toggle("show");
-  });
-</script>
+      // toggle menu on hamburger click
+      toggle.addEventListener("click", () => {
+        navLinks.classList.toggle("show");
+      });
+
+      // close menu when clicking a link
+      links.forEach(link => {
+        link.addEventListener("click", () => {
+          navLinks.classList.remove("show");
+        });
+      });
+    </script>
+
 
 </body>
 </html>
