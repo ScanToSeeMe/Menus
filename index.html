@@ -1,109 +1,266 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
-<meta charset="UTF-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/x-icon" href="favicon2.png">
   <title>Scan To See Me</title>
 
-  <!-- Basic SEO -->
-  <meta name="title" content="Scan To See Me ">
-  <meta name="description" content="Choose your Menu: Classic or Modern options.">
+  <!-- SEO -->
+  <meta name="title" content="Scan To See Me - Digital Menus">
+  <meta name="description" content="Digital menus with style. Classic & Modern E-Menus.">
 
-  <!-- Open Graph / Facebook / Viber / Messenger -->
+  <!-- OG -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://scantosee.me/"> <!-- Βάλε το κανονικό URL της σελίδας -->
-  <meta property="og:title" content="Scan To See Me - Our Menus">
-  <meta property="og:description" content="Choose your Menu: Classic & Modern options.">
-  <meta property="og:image" content="https://scantosee.me/favicon2.png"> <!-- 1200x630 ή 1200x628 -->
-  <meta property="og:locale" content="en_GB">
+  <meta property="og:url" content="https://scantosee.me/">
+  <meta property="og:title" content="Scan To See Me - Digital Menus">
+  <meta property="og:description" content="Classic & Modern E-Menus with style.">
+  <meta property="og:image" content="https://scantosee.me/favicon2.png">
+  <meta property="og:locale" content="el_GR">
+
+  <!-- AOS fade-up -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
 
   <style>
     :root {
-      --bg: #ffffff;
-      --text: #1f1f1f;
-      --accent: #b59b7e; /* ελαφρύ, “cool” καφέ */
-      --accent-weak: #eae3db;
+      --bg: #fff;
+      --text: #222;
+      --accent: #b59b7e;
+      --accent-light: #eae3db;
     }
 
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--text);
-      background: var(--bg);
-      display: grid;
-      place-items: center;
-      padding: 24px;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6;
     }
 
-    .wrap {
+    /* NAVBAR */
+    header {
       width: 100%;
-      max-width: 520px;
+      background: #fff;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    nav .logo a {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 22px;
+    }
+    nav ul li a {
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav ul li a:hover {
+      color: var(--accent);
+    }
+
+    /* HERO */
+    .hero {
       text-align: center;
+      padding: 80px 24px 60px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 2.8vw + 1rem, 3rem);
+      margin-bottom: 12px;
+    }
+    .hero p {
+      color: #555;
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
     }
 
-    h1 {
-      margin: 0 0 8px;
-      font-size: clamp(1.6rem, 2.3vw + 1rem, 2.2rem);
-      letter-spacing: 0.2px;
-    }
-    p.sub {
-      margin: 0 0 28px;
-      color: #666;
-      font-size: 0.98rem;
-    }
+    /* SECTION */
+    section { padding: 60px 24px; max-width: 1000px; margin: 0 auto; }
+    section h2 { font-size: 1.8rem; margin-bottom: 20px; text-align: center; }
+    section p { max-width: 800px; margin: 0 auto; text-align: center; color: #444; }
 
-    .btns {
+    /* MENU SECTION */
+    .menus .btns {
       display: grid;
       gap: 14px;
+      max-width: 400px;
+      margin: 30px auto 0;
     }
     a.btn {
-      display: inline-block;
+      padding: 14px;
       text-decoration: none;
-      padding: 14px 18px;
       border: 1px solid var(--accent);
-      color: var(--bg);
-      background: var(--accent);
       border-radius: 12px;
       font-weight: 600;
-      font-size: 1.02rem;
-      transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease, color 0.2s ease;
+      transition: all 0.2s ease;
+      display: block;
       text-align: center;
+    }
+    a.btn.primary {
+      background: var(--accent);
+      color: #fff;
     }
     a.btn.secondary {
       background: transparent;
       color: var(--text);
-      border-color: var(--accent);
     }
-    a.btn:active { transform: scale(0.98); }
-    a.btn:hover { box-shadow: 0 6px 18px rgba(181, 155, 126, 0.25); }
+    a.btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
 
+    /* BEFORE AFTER */
+    .compare {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 20px;
+    }
+    .compare img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    @media(max-width: 700px) {
+      .compare { grid-template-columns: 1fr; }
+    }
+
+    /* CONTACT FORM */
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button {
+      padding: 12px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    button:hover { background: #a28363; }
+
+    /* FOOTER */
     footer {
-      margin-top: 22px;
-      color: #888;
+      background: #f8f8f8;
+      padding: 24px;
+      text-align: center;
       font-size: 0.9rem;
+      color: #666;
+      margin-top: 80px;
+    }
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+      margin: 0 8px;
     }
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <h1>Menu</h1>
-    <p class="sub"> E - Menus </p>
+  <!-- NAV -->
+  <header>
+    <nav>
+      <div class="logo">
+        <a href="index.html">
+          <img src="favicon2.png" alt="Logo" width="24" height="24"/>
+          ScanToSeeMe
+        </a>
+      </div>
+      <ul>
+        <li><a href="#">Αρχική</a></li>
+        <li><a href="#menus">Τα Μενού μας</a></li>
+        <li><a href="#before-after">Πριν και Μετά</a></li>
+        <li><a href="#contact">Επικοινωνία</a></li>
+      </ul>
+    </nav>
+  </header>
 
+  <!-- HERO -->
+  <section class="hero" data-aos="fade-up">
+    <h1>Digital Menus, Modern & Minimal</h1>
+    <p>Κάνε upgrade το μενού σου με το <strong>ScanToSeeMe</strong>. Επιλογές σε Classic και Modern e-Menus.</p>
+  </section>
+
+
+
+  <!-- MENUS -->
+  <section class="menus" id = "menus" data-aos="fade-up">
+    <h2>Διάλεξε ένα από τα σχέδια μας</h2>
     <div class="btns">
-      <a class="btn"           href="locale/index.html" aria-label="Μετάβαση στο Μενού 1">Classic Menu 1</a>
-      <!--<a class="btn"           href="menu2.html" aria-label="Μετάβαση στο Μενού 2">Classic Menu 2</a>-->
-      <a class="btn"           href="/mpournelis/index.html" aria-label="Μετάβαση στο Μενού 3">Classic Menu 2</a>
-
-
-      <a class="btn secondary" href="menusForExplore/menu4.html" aria-label="Μετάβαση στο Μοντέρνο Μίνιμαλ Μενού">Modern Menu 1</a>
-      <a class="btn secondary" href="menusForExplore/menu5.html" aria-label="Μετάβαση στο Μοντέρνο Μίνιμαλ Μενού 2">Modern Menu 2</a>
-      <a class="btn secondary" href="menusForExplore/menu6.html" aria-label="Μετάβαση στο Μοντέρνο Μίνιμαλ Μενού 3">Modern Menu 3</a>
+      <a class="btn primary" href="locale/index.html">Classic Menu 1</a>
+      <a class="btn primary" href="/mpournelis/index.html">Classic Menu 2</a>
+      <a class="btn secondary" href="menusForExplore/menu4.html">Modern Menu 1</a>
+      <a class="btn secondary" href="menusForExplore/menu5.html">Modern Menu 2</a>
+      <a class="btn secondary" href="menusForExplore/menu6.html">Modern Menu 3</a>
     </div>
+  </section>
 
-    <footer>Διάλεξε ποιο μενού θέλεις να δεις</footer>
-  </main>
+  <!-- BEFORE AFTER -->
+  <section class="before-after"  id = "before-after" data-aos="fade-up">
+    <h2>Πριν & Μετά</h2>
+    <div class="compare">
+      <div>
+        <h3>Πριν</h3>
+        <img src="before.png" alt="Παλαιό Μενού">
+      </div>
+      <div>
+        <h3>Μετά</h3>
+        <img src="mpournelis/1.png" alt="Νέο Digital Μενού">
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" data-aos="fade-up">
+    <h2>Επικοινωνία</h2>
+    <form>
+      <input type="text" name="name" placeholder="Name" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <textarea name="message" rows="5" placeholder="Πες μας λίγα λόγια..." required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2025 ScanToSeeMe | All rights reserved.</p>
+    <p>
+      <a href="terms.html">Όροι</a> | <a href="privacy.html">Privacy</a>
+    </p>
+  </footer>
+
+  <!-- AOS Script -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>AOS.init({ duration: 900, once: true });</script>
 </body>
 </html>
