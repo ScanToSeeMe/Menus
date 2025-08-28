@@ -35,11 +35,13 @@
     }
 
     header.top {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
       background: var(--panel);
       border-bottom: 1px solid var(--line);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      z-index: 300;
     }
 
     .brand {
@@ -61,18 +63,13 @@
       color: var(--muted);
       font-size: 0.92rem;
     }
-
     .chips {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 200;
       display: flex;
       gap: 8px;
       overflow-x: auto;
       padding: 10px clamp(12px, 3vw, 24px) 14px;
       background: var(--panel);
+      border-top: 1px solid var(--line);
       border-bottom: 1px solid var(--line);
       scroll-snap-type: x proximity;
       -webkit-overflow-scrolling: touch;
@@ -95,7 +92,7 @@
 
     main {
       background: var(--panel);
-      padding-top: 60px; /* περίπου το ύψος της μπάρας */
+      padding-top: 120; /* περίπου το ύψος της μπάρας */
     }
 
     section.category {
